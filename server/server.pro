@@ -15,7 +15,6 @@ HEADERS += $$files("./*.h")
 FORMS += \
     mainwindow.ui
 
-CONFIG(release, debug|release) 
-{
-    DESTDIR = ../build
+CONFIG(release, debug|release) {
+    DESTDIR = $$PWD/../build
 }

@@ -15,7 +15,6 @@ SOURCES += \
 HEADERS += \
     tcpclient.h
 
-CONFIG(release, debug|release) 
-{
-    DESTDIR = ../build
+CONFIG(release, debug|release) {
+    DESTDIR = $$PWD/../build
 }
