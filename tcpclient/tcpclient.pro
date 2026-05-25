@@ -13,7 +13,10 @@ SOURCES += \
         tcpclient.cpp
         
 HEADERS += \
-    tcpclient.h
+    tcpclient.h \
+    $$files("./../common/*.h")
+
+INCLUDEPATH += ../common
 
 CONFIG(release, debug|release) {
     DESTDIR = $$PWD/../build
