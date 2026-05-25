@@ -98,6 +98,9 @@ void MainWindow::OnStartStopClicked() {
     m_server_thread->quit();
     m_server_thread->wait();
     m_start_stop_button->setText("Запустить сервер");
+    for (auto key : m_clientLog.keys()) {
+      m_clientLog[key] = Not;
+    }
   } else {
     // Запускаем поток
     m_server_thread->start();
@@ -165,12 +168,34 @@ void MainWindow::ContextMenuClientsId(const QPoint &pos) {
   QMenu *menu = new QMenu(this);
   auto *action_log = new QAction("Получать только логи вариннг", this);
   auto *action_any = new QAction("Получать любые пакеты", this);
+  auto *action_not = new QAction("Остановить пакеты", this);
   menu->addAction(action_log);
   menu->addAction(action_any);
+  menu->addAction(action_not);
   auto clientId = m_clients_table->item(index.row(), 0)->text();
-  connect(action_log, &QAction::triggered,
-          [this, clientId]() { emit ChangePackages("Log", clientId); });
-  connect(action_any, &QAction::triggered,
-          [this, clientId]() { emit ChangePackages("Any", clientId); });
+  switch (m_clientLog.value(clientId)) {
+    case LogWarning:
+      action_log->setEnabled(false);
+      break;
+    case Any:
+      action_any->setEnabled(false);
+      break;
+    case Not:
+    default:
+      action_not->setEnabled(false);
+      break;
+  }
+  connect(action_log, &QAction::triggered, [this, clientId]() {
+    emit ChangePackages("LogWarning", clientId);
+    m_clientLog.insert(clientId, LogWarning);
+  });
+  connect(action_any, &QAction::triggered, [this, clientId]() {
+    emit ChangePackages("Any", clientId);
+    m_clientLog.insert(clientId, Any);
+  });
+  connect(action_not, &QAction::triggered, [this, clientId]() {
+    emit ChangePackages("Not", clientId);
+    m_clientLog.insert(clientId, Not);
+  });
   menu->popup(m_clients_table->viewport()->mapToGlobal(pos));
 }
