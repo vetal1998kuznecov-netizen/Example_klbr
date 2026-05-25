@@ -81,7 +81,7 @@ void TcpClient::OnReadyRead() {
 
   if (m_confirmed) {
     auto type = jsonObj["type"].toString();
-    if (type == "Log") {
+    if (type == "LogWarning") {
       m_data_type = LogWarning;
       if (!m_data_timer->isActive()) {
         qDebug() << "Отправляем только пакеты \"Log\", с статусом "
@@ -95,6 +95,12 @@ void TcpClient::OnReadyRead() {
         qDebug() << "Начинаем отправлять любые пакеты";
         m_data_timer->start(QRandomGenerator::global()->bounded(
             10, 100));  // Задержка 10–100 мс
+      }
+    } else if (type == "Not") {
+      if (m_data_timer->isActive()) {
+        qDebug() << "Останавливаем отправлять любые пакеты";
+        m_data_timer->stop();
+        m_data_type = Any;
       }
     }
   }
