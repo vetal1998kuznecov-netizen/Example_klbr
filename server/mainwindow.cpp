@@ -98,6 +98,9 @@ void MainWindow::OnStartStopClicked() {
     m_server_thread->quit();
     m_server_thread->wait();
     m_start_stop_button->setText("Запустить сервер");
+    for (auto key : m_clientLog.keys()) {
+      m_clientLog[key] = Not;
+    }
   } else {
     // Запускаем поток
     m_server_thread->start();
