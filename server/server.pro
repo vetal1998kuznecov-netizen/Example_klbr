@@ -10,7 +10,10 @@ CONFIG += c++17
 
 SOURCES += $$files("./*.cpp")
 
-HEADERS += $$files("./*.h")
+HEADERS += $$files("./*.h") \
+    $$files("./../common/*.h")
+
+INCLUDEPATH += ../common
 
 FORMS += \
     mainwindow.ui
