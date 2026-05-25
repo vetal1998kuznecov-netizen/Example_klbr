@@ -8,6 +8,8 @@
 #include <QTextEdit>
 #include <QVBoxLayout>
 
+#include "common_data.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -34,6 +36,7 @@ class MainWindow : public QMainWindow {
   QPushButton *m_start_stop_button;
   QVBoxLayout *m_main_layout;
   QThread *m_server_thread;
+  QMap<QString, enumDataType> m_clientLog;
 
  signals:
   void ChangePackages(const QString &type, const QString &clientId);
