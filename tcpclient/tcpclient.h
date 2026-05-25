@@ -4,6 +4,8 @@
 #include <QTcpSocket>
 #include <QTimer>
 
+#include "common_data.h"
+
 class TcpClient : public QObject {
   Q_OBJECT
 
@@ -12,7 +14,6 @@ class TcpClient : public QObject {
   void Start();
 
  private:
-  enum enumDataType { Any = -1, LogWarning = 2 };
   QTcpSocket *m_socket;
   QTimer *m_connection_timer;
   QTimer *m_data_timer;
